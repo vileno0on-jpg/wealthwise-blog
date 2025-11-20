@@ -41,8 +41,9 @@ export async function detectUserLocation(): Promise<LocationData | null> {
       'CN': 'zh',
       'JP': 'ja',
       'KR': 'ko',
-      'AR': 'ar',
       'SA': 'ar',
+      'EG': 'ar',
+      'AE': 'ar',
       'IN': 'hi',
     }
 
@@ -66,4 +67,5 @@ export function getBrowserLanguage(): string {
   const browserLang = navigator.language || (navigator as any).userLanguage
   return browserLang.split('-')[0] // Get language code (e.g., 'en' from 'en-US')
 }
+
 
