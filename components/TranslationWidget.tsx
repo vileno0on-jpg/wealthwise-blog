@@ -281,10 +281,16 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
         `
         document.body.appendChild(statusDiv)
         
-        // Make the translate widget visible
+        // Make the translate widget visible and ensure it's properly styled
         const translateDiv = document.getElementById('google_translate_element')
         if (translateDiv) {
-          translateDiv.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;'
+          translateDiv.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;max-width:200px;background:white;padding:5px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.15);'
+          
+          // Also try to make the select visible
+          const select = document.querySelector('.goog-te-combo') as HTMLElement
+          if (select) {
+            select.style.cssText = 'width:100%;padding:5px;border:1px solid #ccc;border-radius:4px;'
+          }
         }
         
         setTimeout(() => statusDiv.remove(), 10000)
