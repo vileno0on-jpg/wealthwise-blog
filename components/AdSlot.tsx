@@ -166,7 +166,7 @@ export default function AdSlot({
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
-        data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+        data-ad-client="ca-pub-6751442219383870"
         data-ad-slot="YOUR_AD_SLOT_ID"
         data-ad-format={format === 'auto' ? 'auto' : format === 'leaderboard' ? 'horizontal' : format === 'rectangle' ? 'rectangle' : 'auto'}
         data-full-width-responsive="true"
