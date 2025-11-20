@@ -4,7 +4,10 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Google AdSense - Required for site verification */}
+        {/* Google AdSense - Meta tag for site verification */}
+        <meta name="google-adsense-account" content="ca-pub-6751442219383870" />
+        
+        {/* Google AdSense - Script for ad serving */}
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6751442219383870"
