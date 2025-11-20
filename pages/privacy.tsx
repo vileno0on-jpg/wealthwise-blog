@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
   const seo = generateSEOMeta({
     title: 'Privacy Policy | WealthWise',
     description: 'WealthWise Privacy Policy - Learn how we collect, use, and protect your personal information.',
-    path: '/privacy',
+    url: 'https://wealthwise-blog.netlify.app/privacy',
   })
 
   return (

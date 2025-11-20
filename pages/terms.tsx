@@ -6,7 +6,7 @@ export default function TermsOfService() {
   const seo = generateSEOMeta({
     title: 'Terms of Service | WealthWise',
     description: 'WealthWise Terms of Service - Read our terms and conditions for using our website.',
-    path: '/terms',
+    url: 'https://wealthwise-blog.netlify.app/terms',
   })
 
   return (
