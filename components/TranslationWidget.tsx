@@ -50,10 +50,10 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
       existingFrames.forEach(frame => frame.remove())
 
       // Create container for Google Translate widget
-      // Make it visible but small so users can interact if auto-translate fails
+      // Hidden widget - translation triggered programmatically
       const translateDiv = document.createElement('div')
       translateDiv.id = 'google_translate_element'
-      translateDiv.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;max-width:200px;'
+      translateDiv.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0;visibility:hidden;'
       document.body.appendChild(translateDiv)
 
       // Set up the callback
@@ -281,17 +281,7 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
         `
         document.body.appendChild(statusDiv)
         
-        // Make the translate widget visible and ensure it's properly styled
-        const translateDiv = document.getElementById('google_translate_element')
-        if (translateDiv) {
-          translateDiv.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;max-width:200px;background:white;padding:5px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.15);'
-          
-          // Also try to make the select visible
-          const select = document.querySelector('.goog-te-combo') as HTMLElement
-          if (select) {
-            select.style.cssText = 'width:100%;padding:5px;border:1px solid #ccc;border-radius:4px;'
-          }
-        }
+        // Widget stays hidden - translation is automatic
         
         setTimeout(() => statusDiv.remove(), 10000)
       }

@@ -32,14 +32,14 @@ export default function AutoTranslator({ children }: AutoTranslatorProps) {
       return
     }
 
-    // Show modal for first-time visitors
+    // Show modal for first-time visitors - always show on first visit
     const hasSeenModal = sessionStorage.getItem('hasSeenTranslationModal')
     if (!hasSeenModal) {
       // Small delay to ensure page is loaded
       setTimeout(() => {
         setShowModal(true)
         sessionStorage.setItem('hasSeenTranslationModal', 'true')
-      }, 1000)
+      }, 1500)
     }
   }, [])
 
