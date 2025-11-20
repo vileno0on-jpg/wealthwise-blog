@@ -126,18 +126,6 @@ export default function Header() {
           </div>
         )}
       </nav>
-
-      {/* AdSense Header Ad Placeholder */}
-      <div className="container-custom pb-2">
-        <div className="ad-container leaderboard">
-          {/* Google AdSense Leaderboard Ad - 728x90 */}
-          <div className="bg-gray-100 rounded border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400 text-sm">
-            AdSense Leaderboard (728x90)
-            <br />
-            Place your AdSense code here
-          </div>
-        </div>
-      </div>
     </header>
   )
 }

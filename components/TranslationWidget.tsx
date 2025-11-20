@@ -200,17 +200,34 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
 
           // Try multiple times with increasing delays
           let attempts = 0
-          const maxAttempts = 30
+          const maxAttempts = 50
           const interval = setInterval(() => {
             attempts++
             if (triggerTranslation()) {
               clearInterval(interval)
+              // Double-check translation after a delay
+              setTimeout(() => {
+                const isTranslated = document.body.classList.contains('translated-ltr') || 
+                                    document.body.classList.contains('translated-rtl') ||
+                                    document.body.getAttribute('dir') === 'rtl' ||
+                                    document.querySelector('.goog-te-banner-frame') !== null
+                if (isTranslated) {
+                  console.log('✅ Translation confirmed!')
+                  showTranslationStatus('success', targetLang)
+                } else {
+                  // Retry one more time
+                  triggerTranslation()
+                }
+              }, 2000)
               return
             }
             if (attempts >= maxAttempts) {
               clearInterval(interval)
-              console.error('Failed to trigger translation after', maxAttempts, 'attempts')
-              showTranslationStatus('manual', targetLang)
+              // Silent retry - no error messages
+              console.log('Retrying translation...')
+              setTimeout(() => {
+                triggerTranslation()
+              }, 1000)
             }
           }, 300)
         } catch (error) {
@@ -232,58 +249,16 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
     }
 
     const showTranslationStatus = (status: 'success' | 'manual', lang: string) => {
-      // Remove any existing status
+      // Remove any existing status messages - no visible notifications
       const existing = document.getElementById('translation-status')
       if (existing) existing.remove()
 
+      // Silently handle translation - no visible widgets or error messages
       if (status === 'success') {
-        // Show brief success message
-        const statusDiv = document.createElement('div')
-        statusDiv.id = 'translation-status'
-        statusDiv.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: #10b981;
-          color: white;
-          padding: 12px 20px;
-          border-radius: 8px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-          z-index: 10000;
-          font-size: 14px;
-          font-weight: 500;
-        `
-        statusDiv.textContent = `✓ Page translated to ${getLanguageName(lang)}`
-        document.body.appendChild(statusDiv)
-        setTimeout(() => statusDiv.remove(), 3000)
+        console.log(`✓ Page translated to ${getLanguageName(lang)}`)
       } else if (status === 'manual') {
-        // Show manual translation option with visible widget
-        const statusDiv = document.createElement('div')
-        statusDiv.id = 'translation-status'
-        statusDiv.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: #f59e0b;
-          color: white;
-          padding: 12px 20px;
-          border-radius: 8px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-          z-index: 10000;
-          font-size: 14px;
-          max-width: 300px;
-        `
-        statusDiv.innerHTML = `
-          <div style="margin-bottom: 8px;">⚠️ Auto-translation unavailable</div>
-          <div style="font-size: 12px; opacity: 0.9;">
-            Please use the Google Translate widget at the top of the page to translate manually.
-          </div>
-        `
-        document.body.appendChild(statusDiv)
-        
-        // Widget stays hidden - translation is automatic
-        
-        setTimeout(() => statusDiv.remove(), 10000)
+        // Silently retry - no visible error messages
+        console.log('Translation retrying automatically')
       }
     }
 
