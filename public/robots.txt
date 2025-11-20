@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://financehub.com/sitemap.xml
+
+# Disallow admin and private areas (if any)
+Disallow: /admin/
+Disallow: /api/
+
+# Allow all blog posts
+Allow: /blog/
+
+# Allow all categories
+Allow: /categories/
+

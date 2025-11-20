@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+    letter-spacing: -0.02em;
+  }
+  
+  * {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-700 transform hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-primary-600 border-2 border-primary-600 px-8 py-4 rounded-xl font-semibold hover:bg-primary-50 transform hover:scale-105 active:scale-95 transition-all duration-300;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-400;
+  }
+  
+  .prose-custom {
+    @apply prose prose-lg max-w-none;
+  }
+  
+  .prose-custom h2 {
+    @apply text-3xl font-bold mt-12 mb-6 text-gray-900 leading-tight;
+  }
+  
+  .prose-custom h3 {
+    @apply text-2xl font-semibold mt-8 mb-4 text-gray-800 leading-tight;
+  }
+  
+  .prose-custom h4 {
+    @apply text-xl font-semibold mt-6 mb-3 text-gray-800;
+  }
+  
+  .prose-custom p {
+    @apply mb-6 text-gray-700 leading-relaxed text-lg;
+    max-width: 100%;
+  }
+  
+  /* Better paragraph spacing */
+  .prose-custom p + p {
+    margin-top: 1.5rem;
+  }
+  
+  /* Clear explanations with better spacing */
+  .prose-custom p:has(strong) {
+    @apply mb-4;
+  }
+  
+  .prose-custom ul, .prose-custom ol {
+    @apply mb-6 pl-8 space-y-3;
+  }
+  
+  .prose-custom li {
+    @apply mb-3 text-gray-700 text-lg leading-relaxed;
+  }
+  
+  .prose-custom a {
+    @apply text-primary-600 hover:text-primary-700 underline font-medium;
+  }
+  
+  .prose-custom table {
+    @apply w-full border-collapse mb-8 rounded-xl overflow-hidden shadow-md;
+  }
+  
+  .prose-custom th {
+    @apply bg-primary-600 text-white px-6 py-4 text-left font-bold;
+  }
+  
+  .prose-custom td {
+    @apply border-b border-gray-200 px-6 py-4 text-gray-700;
+  }
+  
+  .prose-custom tr:hover {
+    @apply bg-primary-50;
+  }
+  
+  .prose-custom blockquote {
+    @apply border-l-4 border-primary-500 pl-6 py-4 my-8 bg-primary-50 rounded-r-xl italic;
+  }
+  
+  .prose-custom code {
+    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  .prose-custom pre {
+    @apply bg-gray-900 text-gray-100 p-6 rounded-xl overflow-x-auto my-8;
+  }
+  
+  .prose-custom strong {
+    @apply font-bold text-gray-900;
+    font-weight: 700;
+  }
+  
+  .prose-custom em {
+    @apply italic text-gray-800;
+  }
+  
+  /* Better spacing for lists and paragraphs */
+  .prose-custom > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  .prose-custom h2 + p,
+  .prose-custom h3 + p {
+    margin-top: 1rem;
+  }
+  
+  /* Highlight important information with bold text */
+  .prose-custom strong {
+    @apply font-bold text-gray-900;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  
+  /* Better visual hierarchy for bold text in paragraphs */
+  .prose-custom p strong {
+    @apply text-gray-900;
+    font-weight: 700;
+  }
+  
+  /* Clear section separations */
+  .prose-custom h2 {
+    @apply border-b-2 border-primary-200 pb-3 mb-6;
+  }
+  
+  .prose-custom h3 {
+    @apply mt-10 mb-4;
+  }
+  
+  /* White text selection for inputs */
+  input::selection,
+  textarea::selection {
+    background-color: #dbeafe;
+    color: #1e3a8a;
+  }
+  
+  input::-moz-selection,
+  textarea::-moz-selection {
+    background-color: #dbeafe;
+    color: #1e3a8a;
+  }
+}
+
+/* AdSense responsive ad container */
+.ad-container {
+  @apply my-8 flex justify-center;
+  min-height: 100px;
+}
+
+.ad-container.leaderboard {
+  min-height: 90px;
+}
+
+.ad-container.rectangle {
+  min-height: 250px;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+
+/* Grid pattern background */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+

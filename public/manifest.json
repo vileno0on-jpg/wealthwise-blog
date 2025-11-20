@@ -1,0 +1,44 @@
+{
+  "name": "FinanceHub - Personal Finance Blog",
+  "short_name": "FinanceHub",
+  "description": "Expert personal finance tips, investment strategies, and money management advice to help you save, invest, and build wealth.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["finance", "business", "lifestyle", "education"],
+  "shortcuts": [
+    {
+      "name": "Latest Articles",
+      "short_name": "Articles",
+      "description": "Read the latest finance articles",
+      "url": "/blog",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Categories",
+      "short_name": "Topics",
+      "description": "Browse finance topics",
+      "url": "/categories",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
