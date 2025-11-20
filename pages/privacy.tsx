@@ -12,7 +12,12 @@ export default function PrivacyPolicy() {
   return (
     <>
       <Head>
-        {seo}
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description} />
+        <meta property="og:title" content={seo.openGraph.title} />
+        <meta property="og:description" content={seo.openGraph.description} />
+        <meta property="og:url" content={seo.openGraph.url} />
+        <link rel="canonical" href={seo.alternates.canonical} />
       </Head>
 
       <div className="bg-white py-16">
