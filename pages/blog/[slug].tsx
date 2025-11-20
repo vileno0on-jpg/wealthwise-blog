@@ -178,6 +178,19 @@ export default function BlogPost({ post, content }: BlogPostProps) {
                 />
               </div>
 
+              {/* Affiliate Disclosure */}
+              <div className="bg-blue-50 border-l-4 border-primary-600 p-6 mb-8 rounded-r-lg">
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  <strong className="text-gray-900">Disclosure:</strong> This article may contain affiliate links. 
+                  If you click on a link and make a purchase, we may receive a commission at no additional cost to you. 
+                  We only recommend products and services that we believe will be valuable to our readers. 
+                  For more information, please see our{' '}
+                  <Link href="/terms" className="text-primary-600 hover:underline font-semibold">
+                    Terms of Service
+                  </Link>.
+                </p>
+              </div>
+
               {/* Key Takeaways - Conditional based on post */}
               {post.slug.includes('savings') && (
                 <KeyTakeaways

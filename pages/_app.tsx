@@ -5,6 +5,7 @@ import '@/styles/globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import AutoTranslator from '@/components/AutoTranslator'
+import CookieConsent from '@/components/CookieConsent'
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -74,6 +75,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </main>
           <Footer />
+          <CookieConsent />
         </div>
       </AutoTranslator>
     </>

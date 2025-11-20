@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://financehub.com/sitemap.xml
+Sitemap: https://wealthwise-blog.netlify.app/sitemap.xml
 
 # Disallow admin and private areas (if any)
 Disallow: /admin/
@@ -13,4 +13,5 @@ Allow: /blog/
 
 # Allow all categories
 Allow: /categories/
+
 
