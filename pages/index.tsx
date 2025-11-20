@@ -39,6 +39,12 @@ export default function Home() {
         <meta name="twitter:title" content={seo.twitter.title} />
         <meta name="twitter:description" content={seo.twitter.description} />
         <link rel="canonical" href={seo.alternates.canonical} />
+        {/* Google AdSense - Also in page head for verification */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6751442219383870"
+          crossOrigin="anonymous"
+        />
       </Head>
 
       {/* Hero Section */}
