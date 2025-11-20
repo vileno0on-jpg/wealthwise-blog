@@ -18,13 +18,13 @@ export default function FinancePlannerDownload() {
 
       // Title
       doc.setFontSize(24)
-      doc.setTextColor(...primaryColor)
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
       doc.setFont('helvetica', 'bold')
       doc.text('WealthWise Finance Planner', 105, 30, { align: 'center' })
 
       // Subtitle
       doc.setFontSize(12)
-      doc.setTextColor(...textColor)
+      doc.setTextColor(textColor[0], textColor[1], textColor[2])
       doc.setFont('helvetica', 'normal')
       doc.text('Complete Budgeting & Investment Tracking System', 105, 40, { align: 'center' })
 
@@ -33,14 +33,14 @@ export default function FinancePlannerDownload() {
       // Monthly Budget Worksheet
       doc.setFontSize(18)
       doc.setFont('helvetica', 'bold')
-      doc.setTextColor(...primaryColor)
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
       doc.text('MONTHLY BUDGET WORKSHEET', 20, yPos)
       yPos += 10
 
       // Income Section
       doc.setFontSize(14)
       doc.setFont('helvetica', 'bold')
-      doc.setTextColor(...textColor)
+      doc.setTextColor(textColor[0], textColor[1], textColor[2])
       doc.text('Income Sources', 20, yPos)
       yPos += 8
 
@@ -84,13 +84,13 @@ export default function FinancePlannerDownload() {
       // Investment Tracker
       doc.setFontSize(18)
       doc.setFont('helvetica', 'bold')
-      doc.setTextColor(...primaryColor)
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
       doc.text('INVESTMENT TRACKER', 20, yPos)
       yPos += 10
 
       doc.setFontSize(11)
       doc.setFont('helvetica', 'normal')
-      doc.setTextColor(...textColor)
+      doc.setTextColor(textColor[0], textColor[1], textColor[2])
       doc.text('Investment Account: ____________', 25, yPos)
       yPos += 7
       doc.text('Current Value: $____________', 25, yPos)
@@ -103,13 +103,13 @@ export default function FinancePlannerDownload() {
       // Debt Payoff Tracker
       doc.setFontSize(18)
       doc.setFont('helvetica', 'bold')
-      doc.setTextColor(...primaryColor)
+      doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
       doc.text('DEBT PAYOFF TRACKER', 20, yPos)
       yPos += 10
 
       doc.setFontSize(11)
       doc.setFont('helvetica', 'normal')
-      doc.setTextColor(...textColor)
+      doc.setTextColor(textColor[0], textColor[1], textColor[2])
       doc.text('Debt Name: ____________', 25, yPos)
       yPos += 7
       doc.text('Current Balance: $____________', 25, yPos)
