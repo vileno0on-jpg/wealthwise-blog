@@ -50,9 +50,10 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
       existingFrames.forEach(frame => frame.remove())
 
       // Create container for Google Translate widget
+      // Make it visible but small so users can interact if auto-translate fails
       const translateDiv = document.createElement('div')
       translateDiv.id = 'google_translate_element'
-      translateDiv.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0;visibility:hidden;'
+      translateDiv.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;max-width:200px;'
       document.body.appendChild(translateDiv)
 
       // Set up the callback
@@ -73,9 +74,8 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
             'google_translate_element'
           )
 
-          // Wait for the widget to fully initialize
-          const attemptTranslation = () => {
-            // Try to find the select element
+          // Wait for the widget to fully initialize, then trigger translation
+          const triggerTranslation = () => {
             const select = document.querySelector('.goog-te-combo') as HTMLSelectElement
             
             if (select) {
@@ -85,18 +85,21 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
               const options = Array.from(select.options)
               console.log('Available language options:', options.map(opt => ({ value: opt.value, text: opt.text })))
               
-              // Try to find the target language
+              // Find the target language option
               // Google Translate uses format like "en|es" or just the language code
               let targetOption = options.find(opt => {
                 const val = opt.value.toLowerCase()
                 const target = targetLang.toLowerCase()
-                return val === target || 
-                       val === `en|${target}` || 
-                       val === `${target}|en` ||
-                       val.includes(`|${target}|`) ||
-                       val.startsWith(`${target}|`) ||
-                       val.endsWith(`|${target}`) ||
-                       val.split('|').includes(target)
+                // Check various formats
+                if (val === target) return true
+                if (val === `en|${target}`) return true
+                if (val === `${target}|en`) return true
+                if (val.includes(`|${target}|`)) return true
+                if (val.startsWith(`${target}|`)) return true
+                if (val.endsWith(`|${target}`)) return true
+                const parts = val.split('|')
+                if (parts.includes(target)) return true
+                return false
               })
 
               // If not found, try without the country code (e.g., zh-CN -> zh)
@@ -114,56 +117,77 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
               if (targetOption) {
                 console.log('Found target language option:', targetOption.value, targetOption.text)
                 
-                // Set the value
-                select.value = targetOption.value
-                
-                // Create a proper change event
-                const event = new Event('change', { 
-                  bubbles: true, 
-                  cancelable: true 
-                })
-                
-                // Dispatch the event
-                select.dispatchEvent(event)
-                
-                // Also try calling the onchange handler directly
-                if (select.onchange) {
-                  try {
-                    select.onchange(event as any)
-                  } catch (e) {
-                    console.log('onchange handler error:', e)
+                // Use multiple methods to trigger translation
+                const triggerChange = () => {
+                  // Method 1: Direct value assignment and event
+                  select.value = targetOption!.value
+                  
+                  // Method 2: Create and dispatch change event
+                  const changeEvent = new Event('change', { bubbles: true, cancelable: true })
+                  select.dispatchEvent(changeEvent)
+                  
+                  // Method 3: Try input event
+                  const inputEvent = new Event('input', { bubbles: true, cancelable: true })
+                  select.dispatchEvent(inputEvent)
+                  
+                  // Method 4: Direct onchange call if exists
+                  if (select.onchange) {
+                    try {
+                      select.onchange(changeEvent as any)
+                    } catch (e) {
+                      console.log('onchange handler error:', e)
+                    }
                   }
-                }
-
-                // Force a click to ensure the change is registered
-                setTimeout(() => {
+                  
+                  // Method 5: Use Object.defineProperty to trigger
+                  try {
+                    Object.defineProperty(select, 'value', {
+                      value: targetOption!.value,
+                      writable: true,
+                      configurable: true
+                    })
+                    select.dispatchEvent(new Event('change', { bubbles: true }))
+                  } catch (e) {
+                    console.log('defineProperty error:', e)
+                  }
+                  
+                  // Method 6: Simulate user interaction
                   select.focus()
                   select.click()
                   
-                  // Try setting value again after click
-                  setTimeout(() => {
-                    select.value = targetOption!.value
+                  // Method 7: Try setting selectedIndex
+                  const targetIndex = Array.from(select.options).findIndex(opt => opt.value === targetOption!.value)
+                  if (targetIndex >= 0) {
+                    select.selectedIndex = targetIndex
                     select.dispatchEvent(new Event('change', { bubbles: true }))
+                  }
+                }
+                
+                // Trigger immediately
+                triggerChange()
+                
+                // Also trigger after a short delay to ensure widget is ready
+                setTimeout(() => {
+                  triggerChange()
+                  
+                  // Check if translation happened after delay
+                  setTimeout(() => {
+                    const body = document.body
+                    const isTranslated = body.classList.contains('translated-ltr') || 
+                                        body.classList.contains('translated-rtl') ||
+                                        body.getAttribute('dir') === 'rtl' ||
+                                        document.querySelector('.goog-te-banner-frame') !== null ||
+                                        document.querySelector('.skiptranslate') !== null
                     
-                    // Check if translation happened
-                    setTimeout(() => {
-                      const body = document.body
-                      const isTranslated = body.classList.contains('translated-ltr') || 
-                                          body.classList.contains('translated-rtl') ||
-                                          body.getAttribute('dir') === 'rtl' ||
-                                          document.querySelector('.goog-te-banner-frame') !== null
-                      
-                      if (isTranslated) {
-                        console.log('✅ Translation successful!')
-                        // Show success indicator
-                        showTranslationStatus('success', targetLang)
-                      } else {
-                        console.log('⚠️ Translation may not have triggered, trying alternative method')
-                        tryAlternativeTranslation(targetLang)
-                      }
-                    }, 1500)
-                  }, 200)
-                }, 300)
+                    if (isTranslated) {
+                      console.log('✅ Translation successful!')
+                      showTranslationStatus('success', targetLang)
+                    } else {
+                      console.log('⚠️ Translation may not have triggered, trying one more time')
+                      setTimeout(() => triggerChange(), 500)
+                    }
+                  }, 1000)
+                }, 500)
 
                 return true
               } else {
@@ -176,22 +200,22 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
 
           // Try multiple times with increasing delays
           let attempts = 0
-          const maxAttempts = 25
+          const maxAttempts = 30
           const interval = setInterval(() => {
             attempts++
-            if (attemptTranslation()) {
+            if (triggerTranslation()) {
               clearInterval(interval)
               return
             }
             if (attempts >= maxAttempts) {
               clearInterval(interval)
               console.error('Failed to trigger translation after', maxAttempts, 'attempts')
-              tryAlternativeTranslation(targetLang)
+              showTranslationStatus('manual', targetLang)
             }
-          }, 400)
+          }, 300)
         } catch (error) {
           console.error('Error initializing Google Translate:', error)
-          tryAlternativeTranslation(targetLang)
+          showTranslationStatus('manual', targetLang)
         }
       }
 
@@ -202,58 +226,9 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
       script.async = true
       script.onerror = () => {
         console.error('Failed to load Google Translate script')
-        tryAlternativeTranslation(targetLang)
+        showTranslationStatus('manual', targetLang)
       }
       document.body.appendChild(script)
-    }
-
-    const tryAlternativeTranslation = (lang: string) => {
-      // Alternative method: Directly manipulate the Google Translate iframe
-      console.log('Trying alternative translation method for:', lang)
-      
-      const checkForFrame = setInterval(() => {
-        const frames = document.querySelectorAll('iframe[src*="translate.google"]')
-        frames.forEach((frame) => {
-          const iframe = frame as HTMLIFrameElement
-          if (iframe.contentWindow) {
-            try {
-              // Try to access the iframe's document
-              const iframeDoc = iframe.contentDocument || iframe.contentWindow.document
-              if (iframeDoc) {
-                const select = iframeDoc.querySelector('select') as HTMLSelectElement
-                if (select) {
-                  // Find and select the target language
-                  const option = Array.from(select.options).find(opt => {
-                    const val = opt.value.toLowerCase()
-                    return val === lang.toLowerCase() || 
-                           val.includes(`|${lang.toLowerCase()}`) ||
-                           val.split('|').includes(lang.toLowerCase())
-                  })
-                  if (option) {
-                    select.value = option.value
-                    select.dispatchEvent(new Event('change', { bubbles: true }))
-                    console.log('✅ Alternative translation method triggered')
-                    showTranslationStatus('success', lang)
-                    clearInterval(checkForFrame)
-                  }
-                }
-              }
-            } catch (e) {
-              // Cross-origin restrictions - this is expected
-            }
-          }
-        })
-      }, 500)
-
-      setTimeout(() => {
-        clearInterval(checkForFrame)
-        // If still not translated, show manual option
-        if (!document.body.classList.contains('translated-ltr') && 
-            !document.body.classList.contains('translated-rtl')) {
-          console.warn('⚠️ Automatic translation failed. Manual translation may be needed.')
-          showTranslationStatus('manual', lang)
-        }
-      }, 10000)
     }
 
     const showTranslationStatus = (status: 'success' | 'manual', lang: string) => {
@@ -282,7 +257,7 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
         document.body.appendChild(statusDiv)
         setTimeout(() => statusDiv.remove(), 3000)
       } else if (status === 'manual') {
-        // Show manual translation option
+        // Show manual translation option with visible widget
         const statusDiv = document.createElement('div')
         statusDiv.id = 'translation-status'
         statusDiv.style.cssText = `
@@ -301,11 +276,18 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
         statusDiv.innerHTML = `
           <div style="margin-bottom: 8px;">⚠️ Auto-translation unavailable</div>
           <div style="font-size: 12px; opacity: 0.9;">
-            Look for the Google Translate widget on the page to translate manually.
+            Please use the Google Translate widget at the top of the page to translate manually.
           </div>
         `
         document.body.appendChild(statusDiv)
-        setTimeout(() => statusDiv.remove(), 8000)
+        
+        // Make the translate widget visible
+        const translateDiv = document.getElementById('google_translate_element')
+        if (translateDiv) {
+          translateDiv.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;'
+        }
+        
+        setTimeout(() => statusDiv.remove(), 10000)
       }
     }
 
@@ -320,7 +302,7 @@ export default function TranslationWidget({ language }: TranslationWidgetProps) 
     }
 
     // Initialize after a short delay
-    const timer = setTimeout(initTranslation, 300)
+    const timer = setTimeout(initTranslation, 500)
 
     return () => {
       clearTimeout(timer)
