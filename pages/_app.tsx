@@ -68,12 +68,6 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         */}
       </Head>
-      {/* AdSense */}
-      <Script
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6751442219383870"
-        strategy="lazyOnload"
-        crossOrigin="anonymous"
-      />
       <AutoTranslator>
         <div className="min-h-screen flex flex-col">
           <Header />
